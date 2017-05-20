@@ -1,0 +1,59 @@
+#!/bin/bash
+
+# duckspeak <speed> <speech>  Make the duck say something.
+duckspeak() {
+  local speed=$1
+  local speech=$2
+  if [ $speed = '-i' -o $speed = '--instant' ]; then
+    echo "7^< —{$speech}"
+  else
+    local speakage=""
+    local closed_mouth="—"
+    local open_mouth="<"
+    local mouth=$closed_mouth
+    for (( i=0; i<${#speech}; i++ )); do
+      if [ $mouth = $closed_mouth ]; then
+        mouth=$open_mouth
+      else
+        mouth=$closed_mouth
+      fi
+        speakage+="${speech:$i:1}"
+        sleep `bc -l <<< "1/$speed"`
+        echo -en "7^$mouth" "—{$speakage}\r"
+    done
+    echo
+  fi
+}
+
+# Location of the list of all possible duck phrases.
+phrase_list_location=~/duck_talk/phrases
+
+# duckread <file>  Specify the duck's vocabulary file.
+duckread() {
+  phrase_list_location="$1"
+}
+
+# duckphrase <speed>  Make the duck say one of its known phrases.
+duckphrase() {
+  local duck_phrase_list=()
+  mapfile -t duck_phrase_list < $phrase_list_location
+  local picker=`expr $RANDOM % ${#duck_phrase_list[@]}`
+  duckspeak $1 "${duck_phrase_list[$picker]}"
+}
+
+# duckadd <phrase>  Add a phrase to the duck's vocabulary.
+duckadd() {
+  echo $1 >> $phrase_list_location
+  sort -u -o $phrase_list_location $phrase_list_location
+  duckspeak -i "$1"
+}
+
+# ducksub <phrase>  Remove a phrase from the duck's vocabulary.
+ducksub() {
+  sed -i "/^$1$/d" $phrase_list_location
+}
+
+# duckphrases  List all of the phrases that the duck knows.
+duckphrases() {
+  cat $phrase_list_location
+}
