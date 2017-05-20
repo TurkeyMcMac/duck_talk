@@ -26,7 +26,7 @@ duckspeak() {
 }
 
 # Location of the list of all possible duck phrases.
-phrase_list_location=duck_talk/phrases
+phrase_list_location="$(dirname "${BASH_SOURCE[0]}")/phrases"
 
 # duckread <file>  Tell the duck where to get its vocabulary from.
 duckread() {
