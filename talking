@@ -26,7 +26,7 @@ duckspeak() {
 }
 
 # Location of the list of all possible duck phrases.
-phrase_list_location=~/duck_talk/phrases
+phrase_list_location=duck_talk/phrases
 
 # duckread <file>  Specify the duck's vocabulary file.
 duckread() {
