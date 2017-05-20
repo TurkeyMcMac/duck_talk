@@ -1,5 +1,6 @@
 # duck_talk
 Make a duck say stuff on the terminal.
+Requires bash version 4 or higher, I think.
 
 ## commands
 `duckspeak <speed: number or "-i"/"--instant" for instant speech>  <text>`
